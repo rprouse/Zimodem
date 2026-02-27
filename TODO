@@ -1,3 +1,17 @@
+Bugs:
+ *. In swiftdrivr this is backwards:
+3600 lda #>doclal:sta $032c
+3610 lda #<doclal:sta $032d
+Also, in CLOSE, $BA doesn't have the device number if the logical file number was never open to begin with.  Here's how to loook it up:
+JSR $F314 ;LOOK FILE UP
+BEQ LABEL;OPEN...
+CLC
+RTS
+LABEL:
+JSR $F31F ;EXTRACT TABLE DATA
+LDA $BA
+After this .a has the device number
+
 TODO:
  *. Add SuppressGoAhead support for telnet, maybe S register to enable.
  *. See if there's a way to show DNS, and other info using ATI
